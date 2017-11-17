@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 import requests
 
 
@@ -8,14 +8,12 @@ class NerdClient:
     disambiguateService = nerdLocation + "/disambiguate"
     conceptService = nerdLocation + "/kb/concept"
     segmentationService = nerdLocation + "/segmentation"
+    maxTextLength = 500  # Approximation.
 
-    # approximation :-)
-    maxTextLength = 500
+    def process_text(self, text):
+        # text = text.replace("\n", "").replace("\r", "")
 
-    def processText(self, text):
-        #text = text.replace("\n", "").replace("\r", "")
-
-        sentenceCoordinates = [
+        sentence_coordinates = [
             {
                 "offsetStart": 0,
                 "offsetEnd": len(text)
@@ -30,71 +28,72 @@ class NerdClient:
             "customisation": "generic"
         }
 
-        # Split text in sentences
-        totalNbSentences = len(sentenceCoordinates)
-        sentencesGroups = []
+        total_nb_sentences = len(sentence_coordinates) # Split text in sentences
+        sentences_groups = []
 
         if len(text) > self.maxTextLength:
-            statusCode, response =  self.segmentate(text)
+            status_code, response = self.segmentate(text)
 
-            if statusCode == 200:
-                sentenceCoordinates = response['sentences']
-                totalNbSentences = len(sentenceCoordinates)
+            if status_code == 200:
+                sentence_coordinates = response['sentences']
+                total_nb_sentences = len(sentence_coordinates)
             else:
                 exit(-1)
 
-            print("text too long, splitted in " + str(totalNbSentences) + " sentences. ")
-            sentenceGroups = self.groupSentences(totalNbSentences,3)
+            print(
+                "text too long, splitted in " + str(
+                    total_nb_sentences
+                ) + " sentences. "
+            )
+            sentence_groups = self.group_sentences(total_nb_sentences, 3)
         else:
-            body['sentence'] = "true" 
-      
-        if totalNbSentences > 1:
-            body['sentences'] = sentenceCoordinates
+            body['sentence'] = "true"
 
-        # print(body)
+        if total_nb_sentences > 1:
+            body['sentences'] = sentence_coordinates
 
-        if len(sentencesGroups) > 0:
-            for group in sentencesGroups:
+        if len(sentences_groups) > 0:
+            for group in sentences_groups:
                 body['processSentence'] = group
+                nerd_response, status_code = request(body)
 
-                nerdResponse,statusCode = request(body)
-
-                if 'entities' in nerdResponse:
-                    body['entities'].extend(nerdResponse['entities'])
+                if 'entities' in nerd_response:
+                    body['entities'].extend(nerd_response['entities'])
         else:
-             nerdResponse,statusCode = self.request(body)
+            nerd_response, status_code = self.request(body)
 
-        return nerdResponse,statusCode   
+        return nerd_response, status_code
 
-    def request(self,body):
+    def request(self, body):
         files = {"query": str(body)}
 
-        r = requests.post(self.disambiguateService, files=files, headers={'Accept': 'application/json'})
+        r = requests.post(self.disambiguateService, files=files,
+                          headers={'Accept': 'application/json'})
 
-        statusCode = r.status_code
-        nerdResponse = r.reason
-        if statusCode == 200:
-            nerdResponse = r.json()
-            if 'entities' in nerdResponse:
-                body['entities'].extend(nerdResponse['entities'])
+        status_code = r.status_code
+        nerd_response = r.reason
+        if status_code == 200:
+            nerd_response = r.json()
+            if 'entities' in nerd_response:
+                body['entities'].extend(nerd_response['entities'])
 
-                    # if 'domains' in nerdResponse:
-                    #     body['domains'].append(nerdResponse['entities'])
+                # if 'domains' in nerdResponse:
+                #     body['domains'].append(nerdResponse['entities'])
 
-        return nerdResponse, statusCode
+        return nerd_response, status_code
 
-    def fetchConcept(self, id, lang="en"):
-        url = self.conceptService + "/" + id + "?lang=" + lang
+    def fetch_concept(self, concept_id, lang="en"):
+        url = self.conceptService + "/" + concept_id + "?lang=" + lang
         r = requests.get(url, headers={'Accept': 'application/json'})
 
-        statusCode = r.status_code
-        nerdResponse = r.reason
-        if statusCode == 200:
-            nerdResponse = r.json()
+        status_code = r.status_code
+        nerd_response = r.reason
+        if status_code == 200:
+            nerd_response = r.json()
 
-        return nerdResponse, statusCode
+        return nerd_response, status_code
 
-    def termDisambiguation(self, terms):
+    def term_disambiguation(self, terms):
         if isinstance(terms, str):
             terms = [terms, 'history']
 
@@ -106,45 +105,50 @@ class NerdClient:
         for term in terms:
             body["termVector"].append({"term": term})
 
-        r = requests.post(self.disambiguateService, json=body,
-                          headers={'Content-Type': 'application/json; charset=UTF-8'})
+        r = requests.post(
+            self.disambiguateService,
+            json=body,
+            headers={'Content-Type': 'application/json; charset=UTF-8'}
+        )
+        status_code = r.status_code
+        nerd_response = r.reason
 
-        statusCode = r.status_code
-        nerdResponse = r.reason
-        if statusCode == 200:
-            nerdResponse = r.json()
+        if status_code == 200:
+            nerd_response = r.json()
 
-        return nerdResponse, statusCode
+        return nerd_response, status_code
 
-    def getNerdLocation(self):
+    def get_nerd_location(self):
         return self.disambiguateService
 
-    # Call the segmenter in order to split text in sentences
     def segmentate(self, text):
+        """ Call the segmenter in order to split text in sentences. """
 
         files = {'text': text}
         r = requests.post(self.segmentationService, files=files)
+        status_code = r.status_code
+        nerd_response = r.reason
 
-        statusCode = r.status_code
-        nerdResponse = r.reason
-        if statusCode == 200:
-            nerdResponse = r.json()
+        if status_code == 200:
+            nerd_response = r.json()
 
-        return statusCode, nerdResponse
+        return status_code, nerd_response
 
-    def groupSentences(self, totalNbSentences, groupLength):
+    @staticmethod
+    def group_sentences(total_nb_sentences, group_length):
 
-        sentencesGroups = []
-        currentSentenceGroup = []
-        for i in range(0, totalNbSentences):
-            if i % groupLength == 0:
-                if len(currentSentenceGroup) > 0:
-                    sentencesGroups.append(currentSentenceGroup)
-                currentSentenceGroup = [i]
+        sentences_groups = []
+        current_sentence_group = []
+
+        for i in range(0, total_nb_sentences):
+            if i % group_length == 0:
+                if len(current_sentence_group) > 0:
+                    sentences_groups.append(current_sentence_group)
+                current_sentence_group = [i]
             else:
-                currentSentenceGroup.append(i)
+                current_sentence_group.append(i)
 
-        if len(currentSentenceGroup) > 0:
-            sentencesGroups.append(currentSentenceGroup)
+        if len(current_sentence_group) > 0:
+            sentences_groups.append(current_sentence_group)
 
-        return sentencesGroups
+        return sentences_groups
