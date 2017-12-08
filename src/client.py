@@ -1,12 +1,8 @@
 """ Generic API Client """
 from copy import deepcopy
 import json
-import logging
 import requests
 from urlparse import urljoin
-
-
-logger = logging.getLogger(__name__)
 
 
 class ApiClient(object):
@@ -16,15 +12,16 @@ class ApiClient(object):
     service methods, i.e. ``get``, ``post``, ``put`` and ``delete``.
     """
 
-    ResultParser = BaseResponse
-    ErrorParser = ErrorResponse
-    acceptType = 'application/json'
+    accept_type = 'application/json'
+    api_base = None
+    # ResultParser = BaseResponse
+    # ErrorParser = ErrorResponse
 
     def __init__(
             self,
             base_url,
-            username,
-            api_key,
+            username=None,
+            api_key=None,
             status_endpoint=None,
             timeout=60
     ):
@@ -39,7 +36,7 @@ class ApiClient(object):
         self.base_url = base_url
         self.username = username
         self.api_key = api_key
-        self.status_endpoint = urljoin(self.base_url, self.status_endpoint)
+        self.status_endpoint = urljoin(self.base_url, status_endpoint)
         self.timeout = timeout
 
     @staticmethod
@@ -98,7 +95,8 @@ class ApiClient(object):
             headers=None,
             params=None,
             data=None,
-            timeout=None
+            files=None,
+            timeout=None,
     ):
         """ Call API.
 
@@ -110,6 +108,7 @@ class ApiClient(object):
             headers (dict or None): Extra request headers to set.
             params (dict or None): Query-string parameters.
             data (dict or None): Request body contents for POST or PUT requests.
+            files (dict or None: Files to be passed to the request.
             timeout (int): Maximum time before timing out.
 
         Returns:
@@ -117,34 +116,27 @@ class ApiClient(object):
         """
         method = method.upper()
         headers = deepcopy(headers) or {}
-        headers['Accept'] = self.acceptType
+        headers['Accept'] = self.accept_type
         params = deepcopy(params) or {}
         data = data or {}
-        timeout = timeout or self.timeout
+        files = files or {}
 
-        params.update(self.get_credentials())
+        if self.username and self.api_key:
+            params.update(self.get_credentials())
 
-        url = "{b}{u}".format(b=self.base_url, u=url)
-
-        logger.debug(
-            "ApiClient performing call: method=`{m}` "
-            "url=`{u}` headers=`{h}` timeout=`{t}`".format(
-                m=method,
-                u=url,
-                h=headers,
-                t=timeout,
-            )
-        )
+        url = urljoin(self.base_url, url)
 
         r = requests.request(
             method,
             url,
             headers=headers,
             params=params,
+            files=files,
             data=data,
+            timeout=timeout,
         )
 
-        return self.ResultParser(self.decode(r))
+        return r, r.status_code
 
     def get(self, url, params=None, **kwargs):
         """ Call the API with a GET request.
@@ -170,31 +162,47 @@ class ApiClient(object):
         """
         return self.call_api("DELETE", url, params, **kwargs)
 
-    def put(self, url, params=None, data=None, **kwargs):
+    def put(self, url, params=None, data=None, files=None, **kwargs):
         """ Call the API with a PUT request.
 
         Args:
             url (str): Resource location relative to the base URL.
             params (dict or None): Query-string parameters.
             data (dict or None): Request body contents.
+            files (dict or None: Files to be passed to the request.
 
         Returns:
             An instance of ResultParser or ErrorParser.
         """
-        return self.call_api("PUT", url, params=params, data=data, **kwargs)
+        return self.call_api(
+            "PUT",
+            url,
+            params=params,
+            data=data,
+            files=files,
+            **kwargs
+        )
 
-    def post(self, url, params=None, data=None, **kwargs):
+    def post(self, url, params=None, data=None, files=None, **kwargs):
         """ Call the API with a POST request.
 
         Args:
             url (str): Resource location relative to the base URL.
             params (dict or None): Query-string parameters.
             data (dict or None): Request body contents.
+            files (dict or None: Files to be passed to the request.
 
         Returns:
             An instance of ResultParser or ErrorParser.
         """
-        return self.call_api("POST", url, params=params, data=data, **kwargs)
+        return self.call_api(
+            "POST",
+            url,
+            params=params,
+            data=data,
+            files=files,
+            **kwargs
+        )
 
     def service_status(self, **kwargs):
         """ Call the API to get the status of the service.
