@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 import requests
 
 
@@ -10,10 +10,13 @@ class NerdClient:
     segmentationService = nerdLocation + "/segmentation"
 
     # approximation :-)
+    # Max text length before grouping by sentences
     maxTextLength = 500
+    # Nb ot sentences to be processed per query
+    groupSentenceLength = 10
 
     def processText(self, text):
-        #text = text.replace("\n", "").replace("\r", "")
+        # text = text.replace("\n", "").replace("\r", "")
 
         sentenceCoordinates = [
             {
@@ -35,7 +38,7 @@ class NerdClient:
         sentencesGroups = []
 
         if len(text) > self.maxTextLength:
-            statusCode, response =  self.segmentate(text)
+            statusCode, response = self.segmentate(text)
 
             if statusCode == 200:
                 sentenceCoordinates = response['sentences']
@@ -43,11 +46,11 @@ class NerdClient:
             else:
                 exit(-1)
 
-            print("text too long, splitted in " + str(totalNbSentences) + " sentences. ")
-            sentenceGroups = self.groupSentences(totalNbSentences,3)
+            print("text too long, will be split in groups of " + str(self.groupSentenceLength) + " sentences. ")
+            sentencesGroups = self.groupSentences(totalNbSentences, 10)
         else:
-            body['sentence'] = "true" 
-      
+            body['sentence'] = "true"
+
         if totalNbSentences > 1:
             body['sentences'] = sentenceCoordinates
 
@@ -57,16 +60,18 @@ class NerdClient:
             for group in sentencesGroups:
                 body['processSentence'] = group
 
-                nerdResponse,statusCode = request(body)
+                nerdResponse, statusCode = self.request(body)
 
-                if 'entities' in nerdResponse:
+                if statusCode == 200 and 'entities' in nerdResponse:
                     body['entities'].extend(nerdResponse['entities'])
         else:
-             nerdResponse,statusCode = self.request(body)
+            nerdResponse, statusCode = self.request(body)
+            if statusCode == 200:
+                body = nerdResponse
 
-        return nerdResponse,statusCode   
+        return body, statusCode
 
-    def request(self,body):
+    def request(self, body):
         files = {"query": str(body)}
 
         r = requests.post(self.disambiguateService, files=files, headers={'Accept': 'application/json'})
@@ -78,8 +83,8 @@ class NerdClient:
             if 'entities' in nerdResponse:
                 body['entities'].extend(nerdResponse['entities'])
 
-                    # if 'domains' in nerdResponse:
-                    #     body['domains'].append(nerdResponse['entities'])
+                # if 'domains' in nerdResponse:
+                #     body['domains'].append(nerdResponse['entities'])
 
         return nerdResponse, statusCode
 
