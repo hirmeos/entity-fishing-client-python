@@ -155,7 +155,7 @@ class NerdClient(ApiClient):
 
         Returns:
             dict, int: A dict containing a list of dicts with the offsets of
-            each sentence; an integer representing the response code.
+                each sentence; an integer representing the response code.
         """
 
         files = {'text': text}

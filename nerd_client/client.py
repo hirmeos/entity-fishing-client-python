@@ -14,8 +14,6 @@ class ApiClient(object):
 
     accept_type = 'application/json'
     api_base = None
-    # ResultParser = BaseResponse
-    # ErrorParser = ErrorResponse
 
     def __init__(
             self,
