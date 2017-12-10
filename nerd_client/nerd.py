@@ -1,10 +1,14 @@
 import json
 import sys
-from urlparse import urljoin
+
+try:
+    from urlparse import urljoin
+except ImportError:
+    from urllib.parse import urljoin
 
 from zenlog import logging
 
-from client import ApiClient
+from .client import ApiClient
 
 
 logger = logging.getLogger(__name__)

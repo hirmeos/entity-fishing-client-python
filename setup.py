@@ -23,6 +23,7 @@ setup(
         'Topic :: Text processing',
         'License :: OSI Approved :: GPLv3',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.6',
     ],
     keywords='text_processing',
     install_requires=['requests', 'zenlog'],
