@@ -2,3 +2,6 @@
 .idea/*
 *.iml
 .python-version
+dist
+*.egg-info
+build
