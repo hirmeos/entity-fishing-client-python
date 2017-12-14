@@ -93,7 +93,7 @@ class NerdClient(ApiClient):
                 res, status_code = self.disambiguate(body, prepared=True)
 
                 if status_code == 200 and 'entities' in res:
-                    final_body['entities'].extend(res[u'entities'])
+                    final_body['entities'] = res[u'entities']
 
         logger.debug('About to submit the following query {}'.format(body))
 
