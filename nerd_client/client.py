@@ -150,7 +150,12 @@ class ApiClient(object):
         Returns:
             ResultParser or ErrorParser.
         """
-        return self.call_api("GET", url, params, **kwargs)
+        return self.call_api(
+            "GET",
+            url,
+            params=params,
+            **kwargs,
+        )
 
     def delete(self, url, params=None, **kwargs):
         """ Call the API with a DELETE request.
@@ -162,7 +167,12 @@ class ApiClient(object):
         Returns:
             ResultParser or ErrorParser.
         """
-        return self.call_api("DELETE", url, params, **kwargs)
+        return self.call_api(
+            "DELETE",
+            url,
+            params=params,
+            **kwargs,
+        )
 
     def put(self, url, params=None, data=None, files=None, **kwargs):
         """ Call the API with a PUT request.
