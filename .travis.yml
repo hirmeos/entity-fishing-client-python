@@ -2,5 +2,5 @@ language: python
 python:
   - "3.6"
 
-script: python python/NerdClient.py
+script: python src/python/NerdClient.py
   
