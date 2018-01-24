@@ -1,7 +1,7 @@
 language: python
 python:
 - '3.6'
-script: python src/python/NerdClient.py
+script: python entity-fishing-client/NerdClient.py
 deploy:
   provider: pypi
   user: lfoppiano
