@@ -14,6 +14,15 @@ For more information about entity-fishing, please check the `Entity Fishing Docu
 .. _Entity Fishing service API: http://github.com/kermitt2/nerd
 .. _Entity Fishing Documentation: http://nerd.readthedocs.io
 
+
+Installation
+------------
+
+The latest version of the client is the 0.2.1.
+The client can be installed using `pip`:
+.. code-block:: bash
+   pip install entity-fishing-client
+
 Usage
 -----
 
