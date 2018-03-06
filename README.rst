@@ -151,3 +151,5 @@ The following methods are missing from this client:
 * ``fetchConcept``
 * ``termDisambiguation``
 * ``getNerdLocation``
+* ``queryDisambiguation``
+* ``pdfDisambiguation``
