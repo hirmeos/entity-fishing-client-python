@@ -1,8 +1,7 @@
 HIRMEOS Entity Fishing client
 =============================
 
-Python client to query the `Entity Fishing API`_ developed in the context of the
-EU HIRMEOS project (WP3).
+Python client to query the `Entity Fishing API`_ developed in the context of the EU H2020 HIRMEOS project (WP3).
 
 .. _Entity Fishing API: http://github.com/kermitt2/nerd
 

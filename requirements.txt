@@ -1,6 +1,2 @@
-<<<<<<< HEAD
-requests
-=======
 requests==2.18.4
 zenlog==1.1
->>>>>>> 5825cbfe49275ac1b8c0b598c48df65cf9651299

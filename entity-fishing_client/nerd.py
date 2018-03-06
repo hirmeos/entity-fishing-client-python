@@ -151,7 +151,7 @@ class NerdClient(ApiClient):
 
         logger.debug('Disambiguation failed.')
 
-    def segmentate(self, text):
+    def segment(self, text):
         """ Call the segmenter in order to split text in sentences.
 
         Args:

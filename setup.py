@@ -20,8 +20,8 @@ setup(
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
-        'Topic :: Text processing',
-        'License :: OSI Approved :: GPLv3',
+        # 'Topic :: Text processing',
+        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.6',
     ],
@@ -29,6 +29,6 @@ setup(
     install_requires=['requests', 'zenlog'],
     packages=['nerd'],
     package_dir={
-        'nerd': 'nerd_client'
-    },
+        'nerd': 'entity-fishing_client'
+    }
 )
