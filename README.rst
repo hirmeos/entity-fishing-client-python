@@ -20,7 +20,7 @@ Installation
 
 The latest version of the client is the 0.2.1.
 The client can be installed using `pip`:
-.. code-block:: bash
+
    pip install entity-fishing-client
 
 Usage
