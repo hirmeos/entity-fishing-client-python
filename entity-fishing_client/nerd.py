@@ -63,7 +63,7 @@ class NerdClient(ApiClient):
         sentences_groups = []
 
         if len(text) > self.max_text_length:
-            res, status_code = self.segmentate(text)
+            res, status_code = self.segment(text)
 
             if status_code == 200:
                 sentence_coordinates = res['sentences']
