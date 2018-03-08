@@ -10,7 +10,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='entity-fishing-client',
-    version='0.2.1',
+    version='0.2.2',
     description='A minimal client for entity-fishing service.',
     long_description=long_description,
     url='https://github.com/Hirmeos/entity-fishing-client-python',
