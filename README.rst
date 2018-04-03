@@ -18,7 +18,6 @@ For more information about entity-fishing, please check the `Entity Fishing Docu
 Installation
 ------------
 
-The latest version of the client is the 0.2.1.
 The client can be installed using `pip`:
 
    pip install entity-fishing-client
@@ -32,7 +31,7 @@ Usage
     client = nerd.NerdClient()
 
     client.disambiguate(
-        "Linux is a name that broadly denotes a family of free and open-source software operating systems (OS) built around the Linux kernel.
+        "Linux is a name that broadly denotes a family of free and open-source software operating systems (OS) built around the Linux kernel."
     )
 
 With the following example response:

@@ -154,7 +154,7 @@ class ApiClient(object):
             "GET",
             url,
             params=params,
-            **kwargs,
+            **kwargs
         )
 
     def delete(self, url, params=None, **kwargs):
@@ -171,7 +171,7 @@ class ApiClient(object):
             "DELETE",
             url,
             params=params,
-            **kwargs,
+            **kwargs
         )
 
     def put(self, url, params=None, data=None, files=None, **kwargs):
