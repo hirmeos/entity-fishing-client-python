@@ -1,6 +1,5 @@
 import unittest
 
-
 class NerdTest(unittest.TestCase):
 
     def setUp(self):

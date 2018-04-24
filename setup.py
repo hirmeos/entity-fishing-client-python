@@ -28,5 +28,6 @@ setup(
     keywords=['named entity recognition', 'entity matching', 'entity recognition'],
     install_requires=['requests', 'zenlog'],
     packages=['nerd'],
-    package_dir={'nerd': 'entity-fishing_client'}
+    package_dir={'nerd': 'entity-fishing_client'},
+    zip_safe=False
 )
