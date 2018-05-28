@@ -1,5 +1,7 @@
 import unittest
 
+from nerd.nerd import NerdClient
+
 class NerdTest(unittest.TestCase):
 
     def setUp(self):
