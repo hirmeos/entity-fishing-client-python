@@ -22,7 +22,7 @@ logger.addHandler(stream)
 
 
 class NerdClient(ApiClient):
-    api_base = "http://nerd.huma-num.fr/test/service/"
+    api_base = "http://nerd.huma-num.fr/nerd/service/"
     max_text_length = 500  # Approximation.
 
     def __init__(self, apiBase=api_base):
