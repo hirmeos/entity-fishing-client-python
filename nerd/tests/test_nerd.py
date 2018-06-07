@@ -9,12 +9,15 @@ class NerdTest(unittest.TestCase):
         self.target = NerdClient()
 
     def testDisambiguateText_simpleText(self):
-        text = self.target.disambiguateText("This is a test which should be somehow working")
-        assert text is not None or ""
+        result = self.target.disambiguateText("This is a test which should be somehow working")
+        assert result is not None or ""
+        assert result[1] is 200
+
 
     def testDisambiguateText_simpleText2(self):
-        text = self.target.disambiguateText("This text is too short")
-        assert text is None or ""
+        result = self.target.disambiguateText("This text is ")
+        assert result is not None
+        assert result[1] is 200
 
 
 if __name__ == '__main__':

@@ -8,12 +8,14 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
-
 import unittest
+
+
 def my_test_suite():
     test_loader = unittest.TestLoader()
     test_suite = test_loader.discover('nerd/tests', pattern='test_*.py')
     return test_suite
+
 
 setup(
     name='entity-fishing-client',
@@ -39,4 +41,3 @@ setup(
     zip_safe=False,
     test_suite='setup.my_test_suite'
 )
-
