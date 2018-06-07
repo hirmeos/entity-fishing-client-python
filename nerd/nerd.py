@@ -73,7 +73,7 @@ class NerdClient(ApiClient):
                     total_nb_sentences
                 )
             )
-            sentences_groups = self._group_sentences(total_nb_sentences, 3)
+            sentences_groups = self._group_sentences(total_nb_sentences, 10)
         else:
             body['sentence'] = "true"
 
