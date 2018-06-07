@@ -1,7 +1,10 @@
 language: python
 python:
 - '3.6'
-script: python setup.py test
+script:
+  - python setup.py test
+  - python setup.py sdist
+  
 deploy:
   provider: pypi
   user: lfoppiano
