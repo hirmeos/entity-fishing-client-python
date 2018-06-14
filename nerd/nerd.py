@@ -24,6 +24,7 @@ logger.addHandler(stream)
 class NerdClient(ApiClient):
     api_base = "http://nerd.huma-num.fr/nerd/service/"
     max_text_length = 500  # Approximation.
+    sentences_per_group = 10  # Number of sentences per group
 
     def __init__(self, apiBase=api_base):
         super(NerdClient, self).__init__(base_url=apiBase)
@@ -35,19 +36,35 @@ class NerdClient(ApiClient):
         self.concept_service = urljoin(api_base, "kb/concept")
         self.segmentation_service = urljoin(api_base, "segmentation")
 
-    def _process_text(self, body):
-        """ Prepare text for disambiguation.
+    def _process_query(self, query, prepared=False):
+        """ Process query recursively, if the text is too long, it is splitted and processed bit a bit 
 
         Args:
-            text (str): Text to be processed.
-            language (str): if language known
-            entities (list): list of entities of already disambiguated entities
-
+            query (sdict): Text to be processed.
+            prepared (bool): True when the query is ready to be submitted via POST request
         Returns:
             str: Body ready to be submitted to the API.
         """
 
-        text = body['text']
+        # Exit condition and POST
+        if prepared is True:
+            files = {'query': str(query)}
+
+            logger.debug('About to submit the following query {}'.format(query))
+
+            res, status = self.post(
+                self.disambiguate_service,
+                files=files,
+                headers={'Accept': 'application/json'},
+            )
+
+            if status == 200:
+                return self.decode(res), status
+            else:
+                logger.debug('Disambiguation failed.')
+                return None, status
+
+        text = query['text']
 
         sentence_coordinates = [
             {
@@ -69,32 +86,43 @@ class NerdClient(ApiClient):
                 logger.error('Error during the segmentation of the text.')
 
             logger.debug(
-                'Text too long, split in {} sentences; building groups.'.format(
-                    total_nb_sentences
+                'Text too long, split in {} sentences; building groups of {} sentences.'.format(
+                    total_nb_sentences, self.sentences_per_group
                 )
             )
-            sentences_groups = self._group_sentences(total_nb_sentences, 10)
+            sentences_groups = self._group_sentences(total_nb_sentences, self.sentences_per_group)
         else:
-            body['sentence'] = "true"
+            query['sentence'] = "true"
 
         if total_nb_sentences > 1:
-            body['sentences'] = sentence_coordinates
+            query['sentences'] = sentence_coordinates
 
         if len(sentences_groups) > 0:
-            final_body = body
-
             for group in sentences_groups:
-                final_body['processSentence'] = group
-                body = json.dumps(final_body)
+                query['processSentence'] = group
 
-                res, status_code = self.disambiguateText(body, prepared=True)
+                res, status_code = self._process_query(query, prepared=True)
 
-                if status_code == 200 and 'entities' in res:
-                    final_body['entities'] = res[u'entities']
+                if status_code == 200:
+                    if 'entities' in res:
+                        query['entities'] = res[u'entities']
+                    query['language'] = res[u'language']
+                else:
+                    logger.error("Error when processing the query {}".format(query))
+                    return None, status_code
 
-        logger.debug('About to submit the following query {}'.format(body))
+        else:
+            res, status_code = self._process_query(query, prepared=True)
 
-        return body
+            if status_code == 200:
+                query['language'] = res[u'language']
+                if 'entities' in res:
+                    query['entities'] = res[u'entities']
+            else:
+                logger.error("Error when processing the query {}".format(query))
+                return None, status_code
+
+        return query, status_code
 
     @staticmethod
     def _group_sentences(total_nb_sentences, group_length):
@@ -157,13 +185,13 @@ class NerdClient(ApiClient):
 
         logger.debug('Disambiguation failed with error ' + str(status))
 
-    def disambiguateText(self, text, language=None, entities=None, prepared=False):
+    def disambiguateText(self, text, language=None, entities=None):
         """ Call the disambiguation service in order to get meanings.
 
         Args:
             text (str): Text to be disambiguated.
             language (str): language of text (if known)
-            prepared (bool): Whether text must be prepared for API before.
+            entities (list): list of entities or mentions to be supplied by the user
 
         Returns:
             dict, int: API response and API status.
@@ -182,18 +210,10 @@ class NerdClient(ApiClient):
         if entities:
             body['entities'] = entities
 
-        body = self._process_text(body) if not prepared else text
-
-        files = {'query': str(body)}
-
-        res, status = self.post(
-            self.disambiguate_service,
-            files=files,
-            headers={'Accept': 'application/json'},
-        )
+        result, status = self._process_query(body)
 
         if status == 200:
-            return self.decode(res), status
+            return result, status
 
         logger.debug('Disambiguation failed.')
 
