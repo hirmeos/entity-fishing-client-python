@@ -8,9 +8,18 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
+import unittest
+
+
+def my_test_suite():
+    test_loader = unittest.TestLoader()
+    test_suite = test_loader.discover('nerd/tests', pattern='test_*.py')
+    return test_suite
+
+
 setup(
     name='entity-fishing-client',
-    version='0.4.1',
+    version='0.5.0',
     description='A minimal client for entity-fishing service.',
     long_description=long_description,
     url='https://github.com/Hirmeos/entity-fishing-client-python',
@@ -27,8 +36,8 @@ setup(
     ],
     keywords=['named entity recognition', 'entity matching', 'entity recognition'],
     install_requires=['requests', 'zenlog'],
-    packages=['entity_fishing'],
-    package_dir={
-        'entity_fishing': 'entity_fishing_client'
-    }
+    packages=['nerd'],
+    # package_dir={'nerd': 'entity-fishing_client'},
+    zip_safe=False,
+    test_suite='setup.my_test_suite'
 )

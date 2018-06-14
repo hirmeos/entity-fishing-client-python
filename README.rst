@@ -30,7 +30,7 @@ Usage
     from nerd import nerd
     client = nerd.NerdClient()
 
-    client.disambiguate(
+    client.disambiguateText(
         "Linux is a name that broadly denotes a family of free and open-source software operating systems (OS) built around the Linux kernel."
     )
 
@@ -156,8 +156,5 @@ Todo
 
 The following methods are missing from this client:
 
-* ``fetchConcept``
 * ``termDisambiguation``
-* ``getNerdLocation``
 * ``queryDisambiguation``
-* ``pdfDisambiguation``
