@@ -253,18 +253,18 @@ class NerdClient(ApiClient):
 
         logger.debug('Language recognition failed.')
 
-    def get_concept(self, conceptId):
+    def get_concept(self, conceptId, lang='en'):
         """ Fetch the concept from the Knowledge base
 
         Args:
               id (str): The concept id to be fetched, it can be Wikipedia page id or Wikiedata id
 
         Returns:
-            dict, int: A dict containing the concept information; an integer reprsenting the response code
+            dict, int: A dict containing the concept information; an integer representing the response code
         """
         url = urljoin(self.concept_service + '/', conceptId)
 
-        res, status_code = self.get(url)
+        res, status_code = self.get(url, params={'lang': lang})
 
         if status_code == 200:
             return self.decode(res), status_code

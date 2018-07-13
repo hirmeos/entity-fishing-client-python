@@ -101,5 +101,17 @@ class NerdTest(unittest.TestCase):
         assert result is not None
 
 
+    def testGetConceptWikidata(self):
+        result = self.target.get_concept('Q142')
+        assert result is not None
+        assert result[1] is 200
+
+
+    def testGetConceptWikipedia(self):
+        result = self.target.get_concept('195', 'fr')
+        assert result is not None
+        assert result[1] is 200
+
+
 if __name__ == '__main__':
     unittest.main()
