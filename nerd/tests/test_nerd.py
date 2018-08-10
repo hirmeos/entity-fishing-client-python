@@ -9,7 +9,7 @@ class NerdTest(unittest.TestCase):
         self.target = NerdClient()
 
     def testDisambiguateText_longText(self):
-        result = self.target.disambiguateText("We introduce in this paper D-SPACES, an implementation of constraint "
+        result = self.target.disambiguate_text("We introduce in this paper D-SPACES, an implementation of constraint "
                                               "systems with space and extrusion operators. Constraint systems are "
                                               "algebraic models that allow for a semantic language-like "
                                               "representation of information in systems where the concept of space is "
@@ -31,7 +31,7 @@ class NerdTest(unittest.TestCase):
         assert result[0]['language']['lang'] == "en"
 
     def testDisambiguateText_shortText(self):
-        result = self.target.disambiguateText("This text is ")
+        result = self.target.disambiguate_text("This text is ")
         assert result is not None
         assert result[1] is 200
 

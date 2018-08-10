@@ -37,11 +37,13 @@ class NerdClient(ApiClient):
         self.segmentation_service = urljoin(api_base, "segmentation")
 
     def _process_query(self, query, prepared=False):
-        """ Process query recursively, if the text is too long, it is splitted and processed bit a bit 
+        """ Process query recursively, if the text is too long,
+        it is splitted and processed bit a bit.
 
         Args:
             query (sdict): Text to be processed.
-            prepared (bool): True when the query is ready to be submitted via POST request
+            prepared (bool): True when the query is ready to be submitted via
+            POST request.
         Returns:
             str: Body ready to be submitted to the API.
         """
@@ -86,11 +88,15 @@ class NerdClient(ApiClient):
                 logger.error('Error during the segmentation of the text.')
 
             logger.debug(
-                'Text too long, split in {} sentences; building groups of {} sentences.'.format(
+                'Text too long, split in {} sentences; building groups of {} '
+                'sentences.'.format(
                     total_nb_sentences, self.sentences_per_group
                 )
             )
-            sentences_groups = self._group_sentences(total_nb_sentences, self.sentences_per_group)
+            sentences_groups = self._group_sentences(
+                total_nb_sentences,
+                self.sentences_per_group
+            )
         else:
             query['sentence'] = "true"
 
@@ -108,7 +114,9 @@ class NerdClient(ApiClient):
                         query['entities'] = res[u'entities']
                     query['language'] = res[u'language']
                 else:
-                    logger.error("Error when processing the query {}".format(query))
+                    logger.error(
+                        "Error when processing the query {}".format(query)
+                    )
                     return None, status_code
 
         else:
@@ -151,7 +159,7 @@ class NerdClient(ApiClient):
 
         return sentences_groups
 
-    def disambiguatePdf(self, file, language=None, entities=None):
+    def disambiguate_pdf(self, file, language=None, entities=None):
         """ Call the disambiguation service in order to process a pdf file .
 
         Args:
@@ -172,7 +180,15 @@ class NerdClient(ApiClient):
         if entities:
             body['entities'] = entities
 
-        files = {'query': str(body), 'file': (file, open(file, 'rb'), 'application/pdf', {'Expires': '0'})}
+        files = {
+            'query': str(body),
+            'file': (
+                file,
+                open(file, 'rb'),
+                'application/pdf',
+                {'Expires': '0'}
+            )
+        }
 
         res, status = self.post(
             self.disambiguate_service,
@@ -180,18 +196,19 @@ class NerdClient(ApiClient):
             headers={'Accept': 'application/json'},
         )
 
-        if status == 200:
-            return self.decode(res), status
+        if status != 200:
+            logger.debug('Disambiguation failed with error ' + str(status))
 
-        logger.debug('Disambiguation failed with error ' + str(status))
+        return self.decode(res), status
 
-    def disambiguateText(self, text, language=None, entities=None):
+    def disambiguate_text(self, text, language=None, entities=None):
         """ Call the disambiguation service in order to get meanings.
 
         Args:
             text (str): Text to be disambiguated.
             language (str): language of text (if known)
-            entities (list): list of entities or mentions to be supplied by the user
+            entities (list): list of entities or mentions to be supplied by
+                the user.
 
         Returns:
             dict, int: API response and API status.
@@ -210,12 +227,12 @@ class NerdClient(ApiClient):
         if entities:
             body['entities'] = entities
 
-        result, status = self._process_query(body)
+        result, status_code = self._process_query(body)
 
-        if status == 200:
-            return result, status
+        if status_code != 200:
+            logger.debug('Disambiguation failed.')
 
-        logger.debug('Disambiguation failed.')
+        return result, status_code
 
     def segment(self, text):
         """ Call the segmenter in order to split text in sentences.
@@ -231,10 +248,10 @@ class NerdClient(ApiClient):
         files = {'text': text}
         res, status_code = self.post(self.segmentation_service, files=files)
 
-        if status_code == 200:
-            return self.decode(res), status_code
+        if status_code != 200:
+            logger.debug('Segmentation failed.')
 
-        logger.debug('Segmentation failed.')
+        return self.decode(res), status_code
 
     def get_language(self, text):
         """ Recognise the language of the text in input
@@ -243,30 +260,33 @@ class NerdClient(ApiClient):
               id (str): The text whose the language needs to be recognised
 
         Returns:
-            dict, int: A dict containing the recognised language and the confidence score
+            dict, int: A dict containing the recognised language and the
+                confidence score.
         """
         files = {'text': text}
         res, status_code = self.post(self.segmentation_service, files=files)
 
-        if status_code == 200:
-            return self.decode(res), status_code
+        if status_code != 200:
+            logger.debug('Language recognition failed.')
 
-        logger.debug('Language recognition failed.')
+        return self.decode(res), status_code
 
     def get_concept(self, conceptId, lang='en'):
         """ Fetch the concept from the Knowledge base
 
         Args:
-              id (str): The concept id to be fetched, it can be Wikipedia page id or Wikiedata id
+              id (str): The concept id to be fetched, it can be Wikipedia
+                page id or Wikiedata id.
 
         Returns:
-            dict, int: A dict containing the concept information; an integer representing the response code
+            dict, int: A dict containing the concept information; an integer
+                representing the response code.
         """
         url = urljoin(self.concept_service + '/', conceptId)
 
         res, status_code = self.get(url, params={'lang': lang})
 
-        if status_code == 200:
-            return self.decode(res), status_code
+        if status_code != 200:
+            logger.debug('Fetch concept failed.')
 
-        logger.debug('Fetch concept failed.')
+        return self.decode(res), status_code
