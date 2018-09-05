@@ -34,28 +34,40 @@ Disambiguation
     client = nerd.NerdClient()
 
 
-To process text:
+To disambiguate text (> 5 words):
+
 .. code-block:: python
+
     client.disambiguate_text(
         "Linux is a name that broadly denotes a family of free and open-source software operating systems (OS) built around the Linux kernel."
+    )
+
+To disambiguate a search query
+.. code-block:: python
+
+    client.disambiguate_query(
+        "python method acronym concrete"
     )
 
 
 To process a PDF:
 .. code-block:: python
+
     client.disambiguate_pdf(pdfFile, language)
+
 
 you can supply the language (iso form of two digits, en, fr, etc..) and the entities (only for text) you already know,
 using the format:
 
-.. code-block:: json
-{
-    'offsetEnd': 5,
-    'offsetStart': 0,
-    'rawName': 'Linux',
-    'wikidataId': 'Q388',
-    'wikipediaExternalRef': 6097297
-}
+.. code-block:: python
+
+   {
+       'offsetEnd': 5,
+       'offsetStart': 0,
+       'rawName': 'Linux',
+       'wikidataId': 'Q388',
+       'wikipediaExternalRef': 6097297
+   }
 
 
 The response is a tuple where the first element is the response body as a dictionary and the second element the error code.
@@ -179,119 +191,123 @@ Here an example:
 KB access
 #########
 .. code-block:: python
-nerd.get_concept("Q456")
+
+   nerd.get_concept("Q456")
+
 
 with response
-(
-   {
-     'rawName': 'Lyon',
-     'preferredTerm': 'Lyon',
-     'nerd_score': 0,
-     'nerd_selection_score': 0,
-     'wikipediaExternalRef': 8638634,
-     'wikidataId': 'Q456',
-     'definitions': [
-       {
-         'definition': "'''Lyon''' ( or ;, locally: ; ), also known as ''Lyons'', is a city in east-central [[France]], in the [[Auvergne-Rhône-Alpes]] [[Regions of France|region]], about from [[Paris]], from [[Marseille]] and from [[Saint-Étienne]]. Inhabitants of the city are called ''Lyonnais''.",
-         'source': 'wikipedia-en',
-         'lang': 'en'
-       }
-     ],
-     'domains': [
-       'Geology',
-       'Sociology'
-     ],
-     'categories': [
-       {
-         'source': 'wikipedia-en',
-         'category': 'World Heritage Sites in France',
-         'page_id': 1178961
-       },
-       [...]
-     ],
-     'multilingual': [
-       {
-         'lang': 'de',
-         'term': 'Lyon',
-         'page_id': 13964
-       },
-       {
-         'lang': 'es',
-         'term': 'Lyon',
-         'page_id': 46490
-       },
-       {
-         'lang': 'fr',
-         'term': 'Lyon',
-         'page_id': 802627
-       },
-       {
-         'lang': 'it',
-         'term': 'Lione',
-         'page_id': 41786
-       }
-     ],
-     'statements': [
-       {
-         'conceptId': 'Q456',
-         'propertyId': 'P1082',
-         'propertyName': 'population',
-         'valueType': 'quantity',
-         'value': {
-           'amount': '+500716',
-           'unit': '1',
-           'upperBound': '+500717',
-           'lowerBound': '+500715'
-         }
-       },
-       {
-         'conceptId': 'Q456',
-         'propertyId': 'P1082',
-         'propertyName': 'population',
-         'valueType': 'quantity',
-         'value': {
-           'amount': '+500716',
-           'unit': '1',
-           'upperBound': '+500717',
-           'lowerBound': '+500715'
-         }
-       },
-       {
-         'conceptId': 'Q456',
-         'propertyId': 'P1464',
-         'propertyName': 'category for people born here',
-         'valueType': 'wikibase-item',
-         'value': 'Q8061504'
-       },
-       {
-         'conceptId': 'Q456',
-         'propertyId': 'P190',
-         'propertyName': 'sister city',
-         'valueType': 'wikibase-item',
-         'value': 'Q5687',
-         'valueName': 'Jericho'
-       },
-       {
-         'conceptId': 'Q456',
-         'propertyId': 'P190',
-         'propertyName': 'sister city',
-         'valueType': 'wikibase-item',
-         'value': 'Q2079',
-         'valueName': 'Leipzig'
-       },
-       {
-         'conceptId': 'Q456',
-         'propertyId': 'P190',
-         'propertyName': 'sister city',
-         'valueType': 'wikibase-item',
-         'value': 'Q580',
-         'valueName': 'Łódź'
-       },
-       [...]
-     ]
-   }
-   200
-)
+.. code-block:: python
+
+   (
+      {
+        'rawName': 'Lyon',
+        'preferredTerm': 'Lyon',
+        'nerd_score': 0,
+        'nerd_selection_score': 0,
+        'wikipediaExternalRef': 8638634,
+        'wikidataId': 'Q456',
+        'definitions': [
+          {
+            'definition': "'''Lyon''' ( or ;, locally: ; ), also known as ''Lyons'', is a city in east-central [[France]], in the [[Auvergne-Rhône-Alpes]] [[Regions of France|region]], about from [[Paris]], from [[Marseille]] and from [[Saint-Étienne]]. Inhabitants of the city are called ''Lyonnais''.",
+            'source': 'wikipedia-en',
+            'lang': 'en'
+          }
+        ],
+        'domains': [
+          'Geology',
+          'Sociology'
+        ],
+        'categories': [
+          {
+            'source': 'wikipedia-en',
+            'category': 'World Heritage Sites in France',
+            'page_id': 1178961
+          },
+          [...]
+        ],
+        'multilingual': [
+          {
+            'lang': 'de',
+            'term': 'Lyon',
+            'page_id': 13964
+          },
+          {
+            'lang': 'es',
+            'term': 'Lyon',
+            'page_id': 46490
+          },
+          {
+            'lang': 'fr',
+            'term': 'Lyon',
+            'page_id': 802627
+          },
+          {
+            'lang': 'it',
+            'term': 'Lione',
+            'page_id': 41786
+          }
+        ],
+        'statements': [
+          {
+            'conceptId': 'Q456',
+            'propertyId': 'P1082',
+            'propertyName': 'population',
+            'valueType': 'quantity',
+            'value': {
+              'amount': '+500716',
+              'unit': '1',
+              'upperBound': '+500717',
+              'lowerBound': '+500715'
+            }
+          },
+          {
+            'conceptId': 'Q456',
+            'propertyId': 'P1082',
+            'propertyName': 'population',
+            'valueType': 'quantity',
+            'value': {
+              'amount': '+500716',
+              'unit': '1',
+              'upperBound': '+500717',
+              'lowerBound': '+500715'
+            }
+          },
+          {
+            'conceptId': 'Q456',
+            'propertyId': 'P1464',
+            'propertyName': 'category for people born here',
+            'valueType': 'wikibase-item',
+            'value': 'Q8061504'
+          },
+          {
+            'conceptId': 'Q456',
+            'propertyId': 'P190',
+            'propertyName': 'sister city',
+            'valueType': 'wikibase-item',
+            'value': 'Q5687',
+            'valueName': 'Jericho'
+          },
+          {
+            'conceptId': 'Q456',
+            'propertyId': 'P190',
+            'propertyName': 'sister city',
+            'valueType': 'wikibase-item',
+            'value': 'Q2079',
+            'valueName': 'Leipzig'
+          },
+          {
+            'conceptId': 'Q456',
+            'propertyId': 'P190',
+            'propertyName': 'sister city',
+            'valueType': 'wikibase-item',
+            'value': 'Q580',
+            'valueName': 'Łódź'
+          },
+          [...]
+        ]
+      }
+      200
+   )
 
 
 Utilities
@@ -300,43 +316,45 @@ Utilities
 Language detection
 ==================
 .. code-block:: python
-nerd.get_language("This is a sentence. This is a second sentence.")
+
+   nerd.get_language("This is a sentence. This is a second sentence.")
+
 
 with response
 .. code-block:: python
 
-(
-   {
-      'sentences':
-      [
-         {'offsetStart': 0, 'offsetEnd': 19},
-         {'offsetStart': 19, 'offsetEnd': 46}
-      ]
-   },
-   200
-)
+   (
+      {
+         'sentences':
+         [
+            {'offsetStart': 0, 'offsetEnd': 19},
+            {'offsetStart': 19, 'offsetEnd': 46}
+         ]
+      },
+      200
+   )
 
 Segmentation
 ============
 .. code-block:: python
-nerd.segment("This is a sentence. This is a second sentence.")
+
+   nerd.segment("This is a sentence. This is a second sentence.")
+
 
 with response
 .. code-block:: python
 
-(
-   {
-      "lang": "en",
-      "conf": 0.9
-   },
-   200
-)
+    (
+        {
+            "lang": "en",
+            "conf": 0.9
+        },
+        200
+    )
 
 
 Todo
 ----
 
 The following methods are missing from this client:
-
 * ``termDisambiguation``
-* ``queryDisambiguation``

@@ -42,9 +42,17 @@ class NerdTest(unittest.TestCase):
         assert result[1] is 200
 
     def testProcessQuery_shortText(self):
-        query = {'text': "This is a simple text"}
+        query = {'text': "This is a simple"}
         result = self.target._process_query(query)
         assert result is not None
+        assert result[1] is 200
+
+
+    def testDisambiguateQuery(self):
+        result = self.target.disambiguate_query("python acronym")
+        assert result is not None
+        assert result[1] is 200
+
 
     def testProcessQuery_longText(self):
         query = {"text": "We introduce in this paper D-SPACES, an implementation of constraint "
