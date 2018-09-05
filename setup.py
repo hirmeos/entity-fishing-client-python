@@ -25,7 +25,7 @@ setup(
     url='https://github.com/Hirmeos/entity-fishing-client-python',
     author='Francesco de Virgilio, Luca Foppiano',
     author_email='francesco.devirgilio@ubiquitypress.com, luca.foppiano@inria.fr',
-    license='GNU GPL v3',
+    license='Apache 2.0',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
