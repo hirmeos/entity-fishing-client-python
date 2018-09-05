@@ -43,6 +43,7 @@ To disambiguate text (> 5 words):
     )
 
 To disambiguate a search query
+
 .. code-block:: python
 
     client.disambiguate_query(
@@ -51,6 +52,7 @@ To disambiguate a search query
 
 
 To process a PDF:
+
 .. code-block:: python
 
     client.disambiguate_pdf(pdfFile, language)
@@ -196,6 +198,7 @@ KB access
 
 
 with response
+
 .. code-block:: python
 
    (
@@ -321,6 +324,7 @@ Language detection
 
 
 with response
+
 .. code-block:: python
 
    (
