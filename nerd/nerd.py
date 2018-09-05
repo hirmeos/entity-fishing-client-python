@@ -1,4 +1,3 @@
-import json
 import sys
 
 try:
@@ -35,6 +34,7 @@ class NerdClient(ApiClient):
         self.disambiguate_service = urljoin(api_base, "disambiguate")
         self.concept_service = urljoin(api_base, "kb/concept")
         self.segmentation_service = urljoin(api_base, "segmentation")
+        self.language_service = urljoin(api_base, "language")
 
     def _process_query(self, query, prepared=False):
         """ Process query recursively, if the text is too long,
@@ -264,7 +264,7 @@ class NerdClient(ApiClient):
                 confidence score.
         """
         files = {'text': text}
-        res, status_code = self.post(self.segmentation_service, files=files)
+        res, status_code = self.post(self.language_service, files=files)
 
         if status_code != 200:
             logger.debug('Language recognition failed.')
