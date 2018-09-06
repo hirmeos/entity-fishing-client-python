@@ -26,7 +26,7 @@ class NerdBatch:
 
     def _process(self, pdfPath):
         logger.info("Processing " + pdfPath)
-        # ({'runtime': 12345, 'bao': 'miao'}, 200)#
+        # response, errorCode = ({'runtime': 12345, 'bao': 'miao'}, 200)
         response, errorCode = self.client.disambiguate_pdf(pdfPath)
 
         if errorCode != 200:
@@ -44,10 +44,19 @@ class NerdBatch:
         with ProcessPoolExecutor(max_workers=num_processes) as executor:
             for filename, result in zip(iterable, executor.map(self._process, onlyfiles)):
                 if result is not None:
-                    logger.info("Processed {} with runtime {}".format(filename, result['runtime']))
+                    pages = len(result['pages'])
+                    runtime = result['runtime'] / 1000
+                    pages_seconds = pages / runtime
+
+                    logger.info("Processed {} ({} pages) with runtime {} s. {} pages/second."
+                                .format(filename,
+                                        pages,
+                                        runtime,
+                                        pages_seconds))
+
                     callback(filename, result)
                 else:
-                    logger.debug("Result is null. fuck it.")
+                    logger.debug("Result is null. ")
 
 
 if __name__ == '__main__':

@@ -10,21 +10,21 @@ class NerdTest(unittest.TestCase):
 
     def testDisambiguateText_longText(self):
         result = self.target.disambiguate_text("We introduce in this paper D-SPACES, an implementation of constraint "
-                                              "systems with space and extrusion operators. Constraint systems are "
-                                              "algebraic models that allow for a semantic language-like "
-                                              "representation of information in systems where the concept of space is "
-                                              "a primary structural feature. We give this information mainly an "
-                                              "epistemic interpretation and consider various agents as entities "
-                                              "acting upon it. D-SPACES is coded as a c++11 library providing "
-                                              "implementations for constraint systems, space functions and extrusion "
-                                              "functions. The interfaces to access each implementation are minimal "
-                                              "and thoroughly documented. D-SPACES also provides property-checking "
-                                              "methods as well as an implementation of a specific type of constraint "
-                                              "systems (a boolean algebra). This last implementation serves as an "
-                                              "entry point for quick access and proof of concept when using these "
-                                              "models. Furthermore, we offer an illustrative example in the form of a "
-                                              "small social network where users post their beliefs and utter their "
-                                              "opinions ")
+                                               "systems with space and extrusion operators. Constraint systems are "
+                                               "algebraic models that allow for a semantic language-like "
+                                               "representation of information in systems where the concept of space is "
+                                               "a primary structural feature. We give this information mainly an "
+                                               "epistemic interpretation and consider various agents as entities "
+                                               "acting upon it. D-SPACES is coded as a c++11 library providing "
+                                               "implementations for constraint systems, space functions and extrusion "
+                                               "functions. The interfaces to access each implementation are minimal "
+                                               "and thoroughly documented. D-SPACES also provides property-checking "
+                                               "methods as well as an implementation of a specific type of constraint "
+                                               "systems (a boolean algebra). This last implementation serves as an "
+                                               "entry point for quick access and proof of concept when using these "
+                                               "models. Furthermore, we offer an illustrative example in the form of a "
+                                               "small social network where users post their beliefs and utter their "
+                                               "opinions ")
         assert result is not None or ""
         assert result[1] is 200
         # assert len(result[0]['sentence']) is 2
@@ -47,7 +47,6 @@ class NerdTest(unittest.TestCase):
         assert result is not None
         assert result[1] is 200
 
-
     def testDisambiguateQuery(self):
         result = self.target.disambiguate_query("python acronym")
         assert result is not None
@@ -56,7 +55,6 @@ class NerdTest(unittest.TestCase):
     def testDisambiguatePdf(self):
         result = self.target.disambiguate_pdf("/Users/lfoppiano/Downloads/entity-fishing-dariah.pdf")
         print(result)
-
 
     def testProcessQuery_longText(self):
         query = {"text": "We introduce in this paper D-SPACES, an implementation of constraint "
@@ -107,17 +105,15 @@ class NerdTest(unittest.TestCase):
                          "models. Furthermore, we offer an illustrative example in the form of a "
                          "small social network where users post their beliefs and utter their "
                          "opinions. "
-                         }
+                 }
 
         result = self.target._process_query(query)
         assert result is not None
-
 
     def testGetConceptWikidata(self):
         result = self.target.get_concept('Q142')
         assert result is not None
         assert result[1] is 200
-
 
     def testGetConceptWikipedia(self):
         result = self.target.get_concept('195', 'fr')
