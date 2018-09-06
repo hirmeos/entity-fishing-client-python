@@ -53,6 +53,10 @@ class NerdTest(unittest.TestCase):
         assert result is not None
         assert result[1] is 200
 
+    def testDisambiguatePdf(self):
+        result = self.target.disambiguate_pdf("/Users/lfoppiano/Downloads/entity-fishing-dariah.pdf")
+        print(result)
+
 
     def testProcessQuery_longText(self):
         query = {"text": "We introduce in this paper D-SPACES, an implementation of constraint "

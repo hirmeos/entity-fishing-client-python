@@ -7,7 +7,7 @@ except ImportError:
 
 from zenlog import logging
 
-from .client import ApiClient
+from client import ApiClient
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
