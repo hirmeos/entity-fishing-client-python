@@ -190,6 +190,26 @@ Here an example:
         200
    )
 
+Batch processing
+######################
+
+Here an example:
+``processBatch`` requires the input directory, a callback and the number of threads/processes. 
+
+.. code-block:: python
+
+    def callback_saveFile(filename, result):
+        output = join("/Users/lfoppiano/development/github/nerd-samples/out", os.path.basename(filename)) + ".json"
+        with open(output, 'w') as outfile:
+            json.dump(result, outfile)
+
+        logger.info("Writing output to " + output)
+        return
+
+
+    NerdBatch().processBatch("/blablabla/nerd-samples/in", callback_saveFile, 2)
+
+
 KB access
 #########
 .. code-block:: python
