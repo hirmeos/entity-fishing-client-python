@@ -26,6 +26,7 @@ class NerdBatch:
 
     def _process(self, pdfPath):
         logger.info("Processing " + pdfPath)
+        # ({'runtime': 12345, 'bao': 'miao'}, 200)#
         response, errorCode = self.client.disambiguate_pdf(pdfPath)
 
         if errorCode != 200:
@@ -42,9 +43,11 @@ class NerdBatch:
         iterable = itertools.cycle(onlyfiles)
         with ProcessPoolExecutor(max_workers=num_processes) as executor:
             for filename, result in zip(iterable, executor.map(self._process, onlyfiles)):
-                logger.info("Processed {} with runtime {}".format(filename, result['runtime']))
-                callback(filename, result)
-                return
+                if result is not None:
+                    logger.info("Processed {} with runtime {}".format(filename, result['runtime']))
+                    callback(filename, result)
+                else:
+                    logger.debug("Result is null. fuck it.")
 
 
 if __name__ == '__main__':
