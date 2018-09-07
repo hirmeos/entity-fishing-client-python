@@ -2,6 +2,7 @@ import itertools
 import json
 import os
 import sys
+import time
 from concurrent.futures.process import ProcessPoolExecutor
 
 from nerd import NerdClient
@@ -68,5 +69,7 @@ if __name__ == '__main__':
         logger.info("Writing output to " + output)
         return
 
-
+    start = time.time()
     NerdBatch().processBatch("/Users/lfoppiano/development/github/nerd-samples/in", callback2, 2)
+
+    logger.info("Batch processed in {}".format(time.time() - start))
