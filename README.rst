@@ -194,20 +194,47 @@ Batch processing
 ######################
 
 Here an example:
-``processBatch`` requires the input directory, a callback and the number of threads/processes. 
+``processBatch`` requires the input directory, a callback and the number of threads/processes, here an example.
+To run it, you have to:
+ - copy the code below in a file.py
+ - install entity-fishing **multithread branch** in edit mode (`pip install -e /path/of/my/branch`)
+ - run it with `python nerd_client_batch.py /input /output 5`
+
+
 
 .. code-block:: python
 
-    def callback_saveFile(filename, result):
-        output = join("/Users/lfoppiano/development/github/nerd-samples/out", os.path.basename(filename)) + ".json"
-        with open(output, 'w') as outfile:
-            json.dump(result, outfile)
+   import json
+   import os
+   import sys
+   import time
 
-        logger.info("Writing output to " + output)
-        return
+   from os.path import join
+
+   from nerd_client_batch import NerdBatch
+
+   if len(sys.argv) != 4:
+       sys.exit("Missing parameter. Usage: python nerd_batch.py /input/directory /output/directory nbThreads")
+
+   inputPath = sys.argv[1]
+   outputPath = sys.argv[2]
+   nbThreads = sys.argv[3]
 
 
-    NerdBatch().processBatch("/blablabla/nerd-samples/in", callback_saveFile, 2)
+   def saveFile(filename, result):
+       output = join(outputPath, os.path.basename(filename)) + ".json"
+       with open(output, 'w') as outfile:
+           json.dump(result, outfile)
+
+       print("Writing output to " + output)
+       return
+
+
+   start = time.time()
+   NerdBatch().processBatch(inputPath, saveFile, int(nbThreads))
+
+   print("Batch processed in " + str(time.time() - start))
+
 
 
 KB access
