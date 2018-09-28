@@ -61,8 +61,15 @@ class NerdBatch:
 
 
 if __name__ == '__main__':
-    def callback2(filename, result):
-        output = join("/Users/lfoppiano/development/github/nerd-samples/out", os.path.basename(filename)) + ".json"
+    if len(sys.argv) != 3:
+        sys.exit("Missing parameter. Usage: python nerd_batch.py /input/directory /output/directory nbThreads")
+
+    inputPath = sys.argv[1]
+    outputPath = sys.argv[2]
+    nbThreads = sys.argv[3]
+
+    def saveFile(filename, result):
+        output = join(outputPath, os.path.basename(filename)) + ".json"
         with open(output, 'w') as outfile:
             json.dump(result, outfile)
 
@@ -70,6 +77,8 @@ if __name__ == '__main__':
         return
 
     start = time.time()
-    NerdBatch().processBatch("/Users/lfoppiano/development/github/nerd-samples/in", callback2, 2)
+    NerdBatch().processBatch(inputPath, saveFile(), nbThreads)
 
     logger.info("Batch processed in {}".format(time.time() - start))
+
+
