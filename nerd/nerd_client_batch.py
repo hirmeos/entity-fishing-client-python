@@ -1,14 +1,10 @@
 import itertools
-import json
-import os
 import sys
-import time
 from concurrent.futures.process import ProcessPoolExecutor
-
-from nerd import NerdClient
 from os import listdir
 from os.path import isfile, join
 
+from nerd_client import NerdClient
 from zenlog import logging
 
 logger = logging.getLogger(__name__)
@@ -58,27 +54,3 @@ class NerdBatch:
                     callback(filename, result)
                 else:
                     logger.debug("Result is null. ")
-
-
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        sys.exit("Missing parameter. Usage: python nerd_batch.py /input/directory /output/directory nbThreads")
-
-    inputPath = sys.argv[1]
-    outputPath = sys.argv[2]
-    nbThreads = sys.argv[3]
-
-    def saveFile(filename, result):
-        output = join(outputPath, os.path.basename(filename)) + ".json"
-        with open(output, 'w') as outfile:
-            json.dump(result, outfile)
-
-        logger.info("Writing output to " + output)
-        return
-
-    start = time.time()
-    NerdBatch().processBatch(inputPath, saveFile(), nbThreads)
-
-    logger.info("Batch processed in {}".format(time.time() - start))
-
-

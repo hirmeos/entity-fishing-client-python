@@ -1,6 +1,6 @@
 import unittest
 
-from nerd.nerd import NerdClient
+from nerd.nerd_client import NerdClient
 
 
 class NerdTest(unittest.TestCase):
