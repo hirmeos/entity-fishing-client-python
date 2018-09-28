@@ -25,6 +25,6 @@ def saveFile(filename, result):
 
 
 start = time.time()
-NerdBatch().processBatch(inputPath, saveFile(), nbThreads)
+NerdBatch().processBatch(inputPath, saveFile, int(nbThreads))
 
 print("Batch processed in " + str(time.time() - start))
