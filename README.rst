@@ -196,9 +196,13 @@ Batch processing
 Here an example:
 ``processBatch`` requires the input directory, a callback and the number of threads/processes, here an example.
 To run it, you have to:
- - copy the code below in a file.py
- - install entity-fishing **multithread branch** in edit mode (`pip install -e /path/of/my/branch`)
- - run it with `python nerd_client_batch.py /input /output 5`
+ - create a new branch for instance `/path/of/my/branch`
+ - under this new branch, prepare two folders `/input` that containing the input Pdf files and `/output` that will accept the processing result
+ - copy the code below in a `runFile.py and put it in `/path/of/my/branch`
+ - create a new virtualenv and activate it in this `/path/of/my/branch`
+ - install all the requirements needed in the `/path/of/my/branch` directory based on the requirements located in the source directory `$ pip install -r /path/of/entity-fishing-client-python/source/requirements.txt`
+ - install entity-fishing **multithread branch** in edit mode (`pip install -e /path/of/entity-fishing-client-python/source`)
+ - run it (for instance with the number of threads 5) with `python runFile.py /input /output 5`
 
 
 
