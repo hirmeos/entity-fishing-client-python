@@ -4,7 +4,7 @@ from concurrent.futures.process import ProcessPoolExecutor
 from os import listdir
 from os.path import isfile, join
 
-from nerd_client import NerdClient
+from nerd.nerd_client import NerdClient
 from zenlog import logging
 
 logger = logging.getLogger(__name__)
