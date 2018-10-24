@@ -19,11 +19,15 @@ logger.addHandler(stream)
 
 
 class NerdBatch:
-    client = NerdClient()
+
+    def __init__(self, apiBase=None):
+        if apiBase:
+            self.client = NerdClient(apiBase=apiBase)
+        else:
+            self.client = NerdClient()
 
     def _process(self, pdfPath):
         logger.info("Processing " + pdfPath)
-        # response, errorCode = ({'runtime': 12345, 'bao': 'miao'}, 200)
         response, errorCode = self.client.disambiguate_pdf(pdfPath)
 
         if errorCode != 200:

@@ -192,53 +192,17 @@ Here an example:
 
 Batch processing
 ######################
+The batch processing is implemented in the class ``NerdBatch``.
+The class can be instantiated by defining the entity-fishing url in the constructor, else the default one is used.
 
-Here is an example:
-``processBatch`` requires the input directory, a callback and the number of threads/processes.
-To run it, we need to:
- - it is recommended to create a new work branch for instance `/path/of/my/branch`
+To run the processing, the method `process` requires the `input` directory, a callback and the number of threads/processes.
+There is an already ready implementation in `script/batchSample.py`.
+
+To run it:
  - under this work branch, prepare two folders: `input` which containing the input Pdf files to be processed and `output` which collecting the processing result
- - copy the code below in a python file, for example in `runFile.py and put it under `/path/of/my/branch`
- - create a new virtualenv and activate it in under `/path/of/my/branch`
- - install all the requirements needed in this virtual environment `$ pip install -r /path/of/entity-fishing-client-python/source/requirements.txt`
- - install entity-fishing **multithread branch** in edit mode (`pip install -e /path/of/entity-fishing-client-python/source`)
- - run it (for instance with the number of threads 5) with `python runFile.py input output 5`
-
-
-
-.. code-block:: python
-
-   import json
-   import os
-   import sys
-   import time
-
-   from os.path import join
-
-   from nerd_client_batch import NerdBatch
-
-   if len(sys.argv) != 4:
-       sys.exit("Missing parameter. Usage: python nerd_batch.py /input/directory /output/directory nbThreads")
-
-   inputPath = sys.argv[1]
-   outputPath = sys.argv[2]
-   nbThreads = sys.argv[3]
-
-
-   def saveFile(filename, result):
-       output = join(outputPath, os.path.basename(filename)) + ".json"
-       with open(output, 'w') as outfile:
-           json.dump(result, outfile)
-
-       print("Writing output to " + output)
-       return
-
-
-   start = time.time()
-   NerdBatch().processBatch(inputPath, saveFile, int(nbThreads))
-
-   print("Batch processed in " + str(time.time() - start))
-
+ - we recommend to create a new virtualenv, activate it and install all the requirements needed in this virtual environment using `$ pip install -r /path/of/entity-fishing-client-python/source/requirements.txt`
+ - (temporarly, until this branch is not merged) install entity-fishing **multithread branch** in edit mode (`pip install -e /path/of/entity-fishing-client-python/source`)
+ - run it with `python runFile.py input output 5`
 
 
 KB access
