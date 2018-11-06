@@ -70,3 +70,8 @@ class NerdBatch:
 
             if len(pdf_files) == num_processes:
                 self.process_batch(pdf_files, callback, num_processes)
+                pdf_files = []
+
+        # last batch
+        if len(pdf_files) > 0:
+            self.process_batch(pdf_files, callback, num_processes)
