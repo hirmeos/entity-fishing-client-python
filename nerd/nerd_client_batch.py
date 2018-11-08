@@ -34,7 +34,7 @@ class NerdBatch:
         if response_code == 503:
             logger.warning("Got 503, sleeping and retrying")
             time.sleep(5)
-            return self._process(self, file, callback)
+            return self.process_file(file, callback)
         elif response_code == 200:
             pages = len(result['pages'])
             runtime = result['runtime'] / 1000
