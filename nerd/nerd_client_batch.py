@@ -48,7 +48,7 @@ class NerdBatch:
             return callback(result)
 
         else:
-            return None
+            logger.error("Got error " + response_code + "from file :" + file + ". Skipping output. ")
 
     def process_batch(self, batch, callback, n):
         print(len(batch), "PDF files to process")
