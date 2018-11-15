@@ -1,9 +1,10 @@
 import io
+import ntpath
 import sys
 import time
 from concurrent.futures.process import ProcessPoolExecutor
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, splitext
 
 from zenlog import logging
 
@@ -46,8 +47,11 @@ class NerdBatch:
                                 pages,
                                 runtime,
                                 pages_seconds))
-            with io.open(output / file + '.json', 'w', encoding='utf8') as tei_file:
-                tei_file.write(result)
+
+            pdf_file_name = ntpath.basename(file)
+            filename = join(output, splitext(pdf_file_name)[0] + '.json')
+            with io.open(filename, 'w', encoding='utf8') as jsonWriter:
+                jsonWriter.write(result)
 
         else:
             logger.error("Got error " + response_code + "from file :" + file + ". Skipping output. ")
