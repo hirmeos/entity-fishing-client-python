@@ -371,9 +371,3 @@ with response
         200
     )
 
-
-Todo
-----
-
-The following methods are missing from this client:
-* ``termDisambiguation``

@@ -201,6 +201,47 @@ class NerdClient(ApiClient):
 
         return self.decode(res), status
 
+    def disambiguate_terms(self, terms, language="en", entities=None):
+        """ Call the disambiguation service in order to get meanings.
+
+            Args:
+                terms (obj): list of objects of term, weight
+                language (str): language of text, english if not specified
+                entities (list): list of entities or mentions to be supplied by
+                    the user.
+
+            Returns:
+                dict, int: API response and API status.
+            """
+
+        body = {
+            "termVector": terms,
+            "entities": [],
+            "onlyNER": "false",
+            "customisation": "generic"
+        }
+
+        body['language'] = {"lang": language}
+
+        if entities:
+            body['entities'] = entities
+
+        files = {'query': str(body)}
+
+        logger.debug('About to submit the following query {}'.format(body))
+
+        res, status = self.post(
+            self.disambiguate_service,
+            files=files,
+            headers={'Accept': 'application/json'},
+        )
+
+        if status == 200:
+            return self.decode(res), status
+        else:
+            logger.debug('Disambiguation failed.')
+            return None, status
+
     def disambiguate_text(self, text, language=None, entities=None):
         """ Call the disambiguation service in order to get meanings.
 

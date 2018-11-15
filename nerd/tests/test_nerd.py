@@ -120,6 +120,11 @@ class NerdTest(unittest.TestCase):
         assert result is not None
         assert result[1] is 200
 
+    def testTermDisambiguation(self):
+        result = self.target.disambiguate_terms([{'term': 'car', 'score': 0.8}, {'term': 'cat', 'score': '0.3'}])
+        assert result is not None
+        assert result[1] is 200
+
 
 if __name__ == '__main__':
     unittest.main()

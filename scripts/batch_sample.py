@@ -21,6 +21,6 @@ nbThreads = sys.argv[3]
 
 
 start = time.time()
-NerdBatch().process(inputPath, outputPath, int(nbThreads))
+NerdBatch('http://localhost:8090/service/').process(inputPath, outputPath, int(nbThreads))
 
 print("Batch processed in " + str(time.time() - start))
