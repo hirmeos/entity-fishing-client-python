@@ -19,7 +19,7 @@ def my_test_suite():
 
 setup(
     name='entity-fishing-client',
-    version='0.5.1',
+    version='0.6.0',
     description='A minimal client for entity-fishing service.',
     long_description=long_description,
     url='https://github.com/Hirmeos/entity-fishing-client-python',
