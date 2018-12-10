@@ -30,8 +30,8 @@ Disambiguation
 
 .. code-block:: python
 
-    from nerd import nerd
-    client = nerd.NerdClient()
+    from nerd import nerd_client
+    client = nerd_client.NerdClient()
 
 
 To disambiguate text (> 5 words):
