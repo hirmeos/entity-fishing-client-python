@@ -256,7 +256,6 @@ class NerdClient(ApiClient):
 
         body = {
             "text": text,
-            "nbest": 'false',
             "entities": [],
             "customisation": "generic"
         }
