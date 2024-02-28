@@ -21,7 +21,7 @@ logger.addHandler(stream)
 
 
 class NerdClient(ApiClient):
-    api_base = "http://nerd.huma-num.fr/nerd/service/"
+    api_base = "https://nerd.huma-num.fr/nerd/service/"
     max_text_length = 500  # Approximation.
     sentences_per_group = 10  # Number of sentences per group
 
@@ -217,7 +217,6 @@ class NerdClient(ApiClient):
         body = {
             "termVector": terms,
             "entities": [],
-            "onlyNER": "false",
             "customisation": "generic"
         }
 
@@ -257,8 +256,8 @@ class NerdClient(ApiClient):
 
         body = {
             "text": text,
+            "nbest": 'false',
             "entities": [],
-            "onlyNER": "false",
             "customisation": "generic"
         }
 
@@ -291,7 +290,6 @@ class NerdClient(ApiClient):
         body = {
             "shortText": query,
             "entities": [],
-            "onlyNER": "false",
             "customisation": "generic"
         }
 
