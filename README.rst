@@ -192,6 +192,7 @@ Here an example:
 
 Batch processing
 ######################
+
 The batch processing is implemented in the class ``NerdBatch``.
 The class can be instantiated by defining the entity-fishing url in the constructor, else the default one is used.
 
@@ -199,6 +200,7 @@ To run the processing, the method `process` requires the `input` directory, a ca
 There is an already ready implementation in `script/batchSample.py`.
 
 To run it:
+
  - under this work branch, prepare two folders: `input` which containing the input Pdf files to be processed and `output` which collecting the processing result
  - we recommend to create a new virtualenv, activate it and install all the requirements needed in this virtual environment using `$ pip install -r /path/of/entity-fishing-client-python/source/requirements.txt`
  - (temporarly, until this branch is not merged) install entity-fishing **multithread branch** in edit mode (`pip install -e /path/of/entity-fishing-client-python/source`)
@@ -207,6 +209,7 @@ To run it:
 
 KB access
 #########
+
 .. code-block:: python
 
    nerd.get_concept("Q456")
@@ -333,12 +336,13 @@ Utilities
 
 Language detection
 ==================
+
 .. code-block:: python
 
    nerd.get_language("This is a sentence. This is a second sentence.")
 
 
-with response
+with response:
 
 .. code-block:: python
 
@@ -355,12 +359,14 @@ with response
 
 Segmentation
 ============
+
 .. code-block:: python
 
    nerd.segment("This is a sentence. This is a second sentence.")
 
 
-with response
+with response:
+
 .. code-block:: python
 
     (

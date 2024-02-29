@@ -1,14 +1,13 @@
 from codecs import open
 from os import path
 from setuptools import setup
+import unittest
 
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file.
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
-
-import unittest
 
 
 def my_test_suite():
@@ -22,6 +21,7 @@ setup(
     version='0.7.2',
     description='A minimal client for entity-fishing service.',
     long_description=long_description,
+    long_description_content_type='text/x-rst',
     url='https://github.com/Hirmeos/entity-fishing-client-python',
     author='Francesco de Virgilio, Luca Foppiano',
     author_email='francesco.devirgilio@ubiquitypress.com, luca.foppiano@inria.fr',
