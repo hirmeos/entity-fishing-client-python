@@ -8,4 +8,4 @@ dist
 *.egg-info
 build
 .eggs
-
+.vscode/
