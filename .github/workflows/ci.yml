@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.6'
+      - run: python setup.py test
+      - run: python setup.py sdist
+      - if: startsWith(github.ref, 'refs/tags/')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: lfoppiano
+          password: WwQ2x/gzhfPxwOge4BlJS7Fq4DHi26nSdD6ilNGOdj5EFKXUhqhDbQGFVi9QiTTc9fFBUoJJ7YfA0D09Ah+iX2sOJl6dDs7/cTIrS5RH45YdAYzJ3KiiDydRutHS0Yu6PLk49WZvLOx4EJjs3tlOBX4J4zSYO76MUtAuxDzDMvoh8SCruibeeFfgRuMu+R2fwVVMr2b8bY4wPMhx6vQnIsWjj72+QBc0ucsRdnsd6d5EdT092VlSvYkTtO9SI5w8JZLSKaR6WdKgh77BFlFd6r5aMlWjjpCUMGhkwBpsuJQ0VDGKKbIau9trLY1peDFYNz20pSSvj6q/NvM8X0WUxuaAjTBb16BeKMLlT49IdO3Bq35VBZmtM+vR66qInvJEQJmpU4WEsRaAgD633tGybwWX3zMO6DkvnKstfEPDIoer1x6bJhYxujIMdNq6OQEHcQWXvDnLn6tRCwvK9S+hz/cf5y+18ODcaqmyIGM/p2/NzNdtFgI0YNdM1COXMjqgtA+hsDv0nPv7ATzHll+JpN+71uC6ALnBsmDW68gbsysRTJ+Cg9D8dk/edMuPe4eEcpD5CPRkrt713/QLH0DRZKZDYj0EXrKmIWFBD4mkZ2oag/bL73uwRxtaYQ6K4kKw2/WwbyRrNvsibMSSXDWc/uGgYqni+XcgC1bZg2OblJw=
